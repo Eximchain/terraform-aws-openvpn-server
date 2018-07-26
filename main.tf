@@ -56,6 +56,14 @@ resource "aws_subnet" "openvpn" {
 # OPENVPN SERVER
 # ---------------------------------------------------------------------------------------------------------------------
 resource "aws_instance" "openvpn_server" {
+  connection {
+    # The default username for our AMI
+    user = "openvpnas"
+
+    # The connection will use the local SSH agent for authentication if this is empty.
+    private_key = "${var.private_key}"
+  }
+
   ami           = "${var.openvpn_ami}"
   instance_type = "${var.openvpn_instance_type}"
 
@@ -81,15 +89,12 @@ reroute_gw=${var.openvpn_reroute_gw}
 reroute_dns=${var.openvpn_reroute_dns}
 EOF
 
+  provisioner "file" {
+    source = "assets/exim_logo.png"
+    destination = "/tmp/exim_logo.png"
+  }
+
   provisioner "remote-exec" {
-    connection {
-      # The default username for our AMI
-      user = "openvpnas"
-
-      # The connection will use the local SSH agent for authentication if this is empty.
-      private_key = "${var.private_key}"
-    }
-
     inline = [
       # Disable auto-updates so provisioners don't fail to obtain lock
       "sudo sh -c 'echo \"APT::Periodic::Enable \"0\";\" >> /etc/apt/apt.conf.d/10periodic'",
@@ -108,8 +113,12 @@ EOF
       # Set VPN network info
       "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpn_cidr), 0)} ConfigPut",
       "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpn_cidr), 1)} ConfigPut",
+      # Add custom logo and name to the config
+      "sudo mv /tmp/exim_logo.png /usr/local/openvpn_as/",
+      "sudo sed -i 's/sa.company_name=OpenVPN, Inc./sa.company_name=Eximchain Pte. Ltd.\\nsa.logo_image_file=\\/usr\\/local\\/openvpn_as\\/exim_logo.png/' /usr/local/openvpn_as/etc/as.conf",
       # Do a warm restart so the config is picked up
       "sudo /usr/local/openvpn_as/scripts/sacli start",
+      "sudo service openvpnas restart",
       # Start Threatstack agent
       "sudo cloudsight setup --deploy-key=${var.threatstack_deploy_key} --ruleset=\"Base Rule Set\" --agent_type=i",
     ]
