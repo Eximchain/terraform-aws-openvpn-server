@@ -114,7 +114,6 @@ EOF
       "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpn_cidr), 0)} ConfigPut",
       "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpn_cidr), 1)} ConfigPut",
       # Enable LDAP authentication via FoxPass
-      # TODO: Extract Variables
       "sudo /usr/local/openvpn_as/scripts/sacli -k auth.module.type -v ldap ConfigPut",
       "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.name -v 'FoxPass LDAP' ConfigPut",
       "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.server.0.host -v ldap.foxpass.com ConfigPut",
