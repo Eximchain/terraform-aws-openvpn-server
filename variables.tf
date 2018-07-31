@@ -67,6 +67,11 @@ variable "openvpn_instance_type" {
   default     = "t2.micro"
 }
 
+variable "authentication_timeout_seconds" {
+  description = "The number of seconds before LDAP authentication times out. Must be long enough to respond to the MFA push notification."
+  default     = "30"
+}
+
 variable "use_dedicated_instance" {
   description = "Whether or not to use a dedicated instance."
   default     = false
