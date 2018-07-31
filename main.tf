@@ -122,7 +122,7 @@ EOF
       "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.users_base_dn -v ou=people,dc=${element(split(".", var.sub_domain), 0)},dc=${element(split(".", var.sub_domain), 1)} ConfigPut",
       "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.uname_attr -v uid ConfigPut",
       "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.use_ssl -v always ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.timeout -v 4 ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.timeout -v 30 ConfigPut",
       # Add custom logo and name to the config
       "sudo mv /tmp/exim_logo.png /usr/local/openvpn_as/",
       "sudo sed -i 's/sa.company_name=OpenVPN, Inc./sa.company_name=Eximchain Pte. Ltd.\\nsa.logo_image_file=\\/usr\\/local\\/openvpn_as\\/exim_logo.png/' /usr/local/openvpn_as/etc/as.conf",
