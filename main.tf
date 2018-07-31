@@ -77,7 +77,7 @@ resource "aws_instance" "openvpn_server" {
   tenancy                 = "${var.use_dedicated_instance ? "dedicated" : "default"}"
 
   tags {
-    Name   = "OpenVPN Server"
+    Name   = "OpenVPN Server: ${var.region_dns_common_name == "" ? var.aws_region : var.region_dns_common_name}"
     Region = "${var.aws_region}"
   }
 
