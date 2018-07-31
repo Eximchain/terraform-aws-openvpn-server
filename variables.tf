@@ -3,7 +3,7 @@ variable "public_key" {
 }
 
 variable "sub_domain" {
-  description = "A sub-domain hosted by Route53 that you can administer."
+  description = "A sub-domain hosted by Route53 that you can administer. FoxPass integration expects this has only one '.' character."
 }
 
 variable "cert_public_key" {
@@ -19,7 +19,7 @@ variable "openvpn_ami" {
 }
 
 variable "openvpn_admin_pw" {
-  description = "The OpenVPN Admin password"
+  description = "The bind user password provided by FoxPass. Will double as OpenVPN admin password."
 }
 
 variable "aws_region" {

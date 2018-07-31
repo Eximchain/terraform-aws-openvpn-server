@@ -113,6 +113,17 @@ EOF
       # Set VPN network info
       "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpn_cidr), 0)} ConfigPut",
       "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpn_cidr), 1)} ConfigPut",
+      # Enable LDAP authentication via FoxPass
+      # TODO: Extract Variables
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.module.type -v ldap ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.name -v 'FoxPass LDAP' ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.server.0.host -v ldap.foxpass.com ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.bind_dn -v cn=${var.openvpn_admin_user},dc=${element(split(".", var.sub_domain), 0)},dc=${element(split(".", var.sub_domain), 1)} ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.bind_pw -v ${var.openvpn_admin_pw} ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.users_base_dn -v ou=people,dc=${element(split(".", var.sub_domain), 0)},dc=${element(split(".", var.sub_domain), 1)} ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.uname_attr -v uid ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.use_ssl -v always ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.timeout -v 4 ConfigPut",
       # Add custom logo and name to the config
       "sudo mv /tmp/exim_logo.png /usr/local/openvpn_as/",
       "sudo sed -i 's/sa.company_name=OpenVPN, Inc./sa.company_name=Eximchain Pte. Ltd.\\nsa.logo_image_file=\\/usr\\/local\\/openvpn_as\\/exim_logo.png/' /usr/local/openvpn_as/etc/as.conf",
