@@ -111,6 +111,12 @@ EOF
       # Insert our SSL cert
       "echo '${var.cert_public_key}' | sudo tee /usr/local/openvpn_as/etc/web-ssl/server.crt > /dev/null",
       "echo '${var.cert_private_key}' | sudo tee /usr/local/openvpn_as/etc/web-ssl/server.key > /dev/null",
+      # Set DNS Servers and traffic routing
+      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.client.routing.reroute_dns -v custom ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.server.dhcp_option.dns.0 -v 8.8.8.8 ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.server.dhcp_option.dns.1 -v 8.8.4.4 ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.server.routing.gateway_access -v true ConfigPut",
+      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.general.osi_layer -v 3 ConfigPut",
       # Set VPN network info
       "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpn_cidr), 0)} ConfigPut",
       "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpn_cidr), 1)} ConfigPut",
