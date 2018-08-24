@@ -47,6 +47,11 @@ variable "vpn_cidr" {
   default     = "172.27.224.0/20"
 }
 
+variable "server_number" {
+  description = "A unique incrementing integer amongst VPN servers being run. Will be used to assign non-conflicting CIDR blocks."
+  default     = 0
+}
+
 variable "private_key" {
   description = "The private SSH key to access the OpenVPN server."
   default     = ""
