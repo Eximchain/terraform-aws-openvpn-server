@@ -37,6 +37,11 @@ variable "oncall_phone_list" {
   default     = []
 }
 
+variable "vpc_base_cidr" {
+  description = "The CIDR that the AWS VPC for VPN servers will be assigned from"
+  default     = "10.0.0.0/12"
+}
+
 variable "vpn_cidr" {
   description = "The CIDR that the VPN will use"
   default     = "172.27.224.0/20"

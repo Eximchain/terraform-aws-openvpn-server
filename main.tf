@@ -19,7 +19,7 @@ resource "aws_key_pair" "admin" {
 # NETWORKING
 # ---------------------------------------------------------------------------------------------------------------------
 resource "aws_vpc" "openvpn" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = "${var.vpc_base_cidr}"
   enable_dns_hostnames = true
 
   tags {
@@ -43,7 +43,7 @@ resource "aws_route" "openvpn" {
 
 resource "aws_subnet" "openvpn" {
   vpc_id                  = "${aws_vpc.openvpn.id}"
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = "${var.vpc_base_cidr}"
   map_public_ip_on_launch = true
 
   tags {
