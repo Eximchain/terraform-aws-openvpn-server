@@ -37,6 +37,11 @@ variable "oncall_phone_list" {
   default     = []
 }
 
+variable "accept_peering_connections" {
+  description = "A list of peering connection IDs to accept connections to"
+  default     = []
+}
+
 variable "vpc_base_cidr" {
   description = "The CIDR that the AWS VPC for VPN servers will be assigned from"
   default     = "10.0.0.0/12"
