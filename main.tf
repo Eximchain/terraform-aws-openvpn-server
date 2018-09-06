@@ -302,3 +302,20 @@ resource "aws_vpc_peering_connection_accepter" "vault" {
     FromType   = "Vault"
   }
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ROUTE CONNECTIONS TO VAULT VPC
+# ---------------------------------------------------------------------------------------------------------------------
+data "aws_vpc_peering_connection" "vault" {
+  count = "${aws_vpc_peering_connection_accepter.vault.count}"
+
+  id = "${aws_vpc_peering_connection_accepter.vault.vpc_peering_connection_id}"
+}
+
+resource "aws_route" "vault" {
+  count = "${aws_vpc_peering_connection_accepter.vault.count}"
+
+  route_table_id            = "${aws_vpc.openvpn.main_route_table_id}"
+  destination_cidr_block    = "${data.aws_vpc_peering_connection.vault.peer_cidr_block}"
+  vpc_peering_connection_id = "${data.aws_vpc_peering_connection.vault.id}"
+}
