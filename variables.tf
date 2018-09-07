@@ -38,8 +38,8 @@ variable "oncall_phone_list" {
 }
 
 variable "accept_peering_connections" {
-  description = "A list of peering connection IDs to accept connections to"
-  default     = []
+  description = "A mapping from peering connection IDs to accept connections to, to CIDR block of the VPC connecting to."
+  default     = {}
 }
 
 variable "vpc_base_cidr" {
