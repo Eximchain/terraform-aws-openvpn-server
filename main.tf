@@ -292,7 +292,7 @@ resource "aws_sns_topic_subscription" "health_check_failed" {
 resource "aws_vpc_peering_connection_accepter" "vault" {
   count = "${length(var.accept_peering_connections)}"
 
-  vpc_peering_connection_id = "${element(concat(keys(var.accept_peering_connections), list("")), count.index)}"
+  vpc_peering_connection_id = "${element(keys(var.accept_peering_connections), count.index)}"
   auto_accept               = true
 }
 
@@ -303,6 +303,6 @@ resource "aws_route" "vault" {
   count = "${aws_vpc_peering_connection_accepter.vault.count}"
 
   route_table_id            = "${aws_vpc.openvpn.main_route_table_id}"
-  destination_cidr_block    = "${element(concat(values(var.accept_peering_connections), list("")), count.index)}"
-  vpc_peering_connection_id = "${element(concat(keys(var.accept_peering_connections), list("")), count.index)}"
+  destination_cidr_block    = "${element(values(var.accept_peering_connections), count.index)}"
+  vpc_peering_connection_id = "${element(keys(var.accept_peering_connections), count.index)}"
 }
