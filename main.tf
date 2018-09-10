@@ -285,20 +285,3 @@ resource "aws_sns_topic_subscription" "health_check_failed" {
   protocol  = "sms"
   endpoint  = "${element(var.oncall_phone_list, count.index)}"
 }
-
-# ---------------------------------------------------------------------------------------------------------------------
-# ACCEPT PEERING CONNECTIONS
-# ---------------------------------------------------------------------------------------------------------------------
-resource "aws_vpc_peering_connection_accepter" "vault" {
-  count = "${length(var.accept_peering_connections)}"
-
-  vpc_peering_connection_id = "${element(var.accept_peering_connections, count.index)}"
-  auto_accept               = true
-
-  tags {
-    Name       = "OpenVPN accept peering from vault"
-    ToRegion   = "${var.aws_region}"
-    ToType     = "OpenVPN"
-    FromType   = "Vault"
-  }
-}
