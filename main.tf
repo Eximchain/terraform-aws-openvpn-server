@@ -112,32 +112,32 @@ EOF
       "echo '${var.cert_public_key}' | sudo tee /usr/local/openvpn_as/etc/web-ssl/server.crt > /dev/null",
       "echo '${var.cert_private_key}' | sudo tee /usr/local/openvpn_as/etc/web-ssl/server.key > /dev/null",
       # Set DNS Servers and traffic routing
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.client.routing.reroute_dns -v custom ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.server.dhcp_option.dns.0 -v 8.8.8.8 ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.server.dhcp_option.dns.1 -v 8.8.4.4 ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.server.routing.gateway_access -v true ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.general.osi_layer -v 3 ConfigPut",
-      # Set VPN network info
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpn_cidr), 0)} ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpn_cidr), 1)} ConfigPut",
-      # Enable LDAP authentication via FoxPass
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.module.type -v ldap ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.name -v 'FoxPass LDAP' ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.server.0.host -v ldap.foxpass.com ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.bind_dn -v cn=${var.openvpn_admin_user},dc=${element(split(".", var.sub_domain), 0)},dc=${element(split(".", var.sub_domain), 1)} ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.bind_pw -v ${var.openvpn_admin_pw} ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.users_base_dn -v ou=people,dc=${element(split(".", var.sub_domain), 0)},dc=${element(split(".", var.sub_domain), 1)} ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.uname_attr -v uid ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.use_ssl -v always ConfigPut",
-      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.timeout -v ${var.authentication_timeout_seconds} ConfigPut",
-      # Add custom logo and name to the config
-      "sudo mv /tmp/exim_logo.png /usr/local/openvpn_as/",
-      "sudo sed -i 's/sa.company_name=OpenVPN, Inc./sa.company_name=Eximchain Pte. Ltd.\\nsa.logo_image_file=\\/usr\\/local\\/openvpn_as\\/exim_logo.png/' /usr/local/openvpn_as/etc/as.conf",
-      # Do a warm restart so the config is picked up
-      "sudo /usr/local/openvpn_as/scripts/sacli start",
-      "sudo service openvpnas restart",
-      # Start Threatstack agent
-      "sudo cloudsight setup --deploy-key=${var.threatstack_deploy_key} --ruleset=\"Base Rule Set\" --agent_type=i",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.client.routing.reroute_dns -v custom ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.server.dhcp_option.dns.0 -v 8.8.8.8 ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.server.dhcp_option.dns.1 -v 8.8.4.4 ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.server.routing.gateway_access -v true ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.general.osi_layer -v 3 ConfigPut",
+#      # Set VPN network info
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.network -v ${element(split("/", var.vpn_cidr), 0)} ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k vpn.daemon.0.client.netmask_bits -v ${element(split("/", var.vpn_cidr), 1)} ConfigPut",
+#      # Enable LDAP authentication via FoxPass
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.module.type -v ldap ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.name -v 'FoxPass LDAP' ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.server.0.host -v ldap.foxpass.com ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.bind_dn -v cn=${var.openvpn_admin_user},dc=${element(split(".", var.sub_domain), 0)},dc=${element(split(".", var.sub_domain), 1)} ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.bind_pw -v ${var.openvpn_admin_pw} ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.users_base_dn -v ou=people,dc=${element(split(".", var.sub_domain), 0)},dc=${element(split(".", var.sub_domain), 1)} ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.uname_attr -v uid ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.use_ssl -v always ConfigPut",
+#      "sudo /usr/local/openvpn_as/scripts/sacli -k auth.ldap.0.timeout -v ${var.authentication_timeout_seconds} ConfigPut",
+#      # Add custom logo and name to the config
+#      "sudo mv /tmp/exim_logo.png /usr/local/openvpn_as/",
+#      "sudo sed -i 's/sa.company_name=OpenVPN, Inc./sa.company_name=Eximchain Pte. Ltd.\\nsa.logo_image_file=\\/usr\\/local\\/openvpn_as\\/exim_logo.png/' /usr/local/openvpn_as/etc/as.conf",
+#      # Do a warm restart so the config is picked up
+#      "sudo /usr/local/openvpn_as/scripts/sacli start",
+#      "sudo service openvpnas restart",
+#      # Start Threatstack agent
+#      "sudo cloudsight setup --deploy-key=${var.threatstack_deploy_key} --ruleset=\"Base Rule Set\" --agent_type=i",
     ]
   }
 }
