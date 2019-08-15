@@ -105,9 +105,9 @@ EOF
       # Remove software with vulnerabilities
       "sudo apt-get remove -y tcpdump bzip2 ed cron",
       # Update and install packages
-      "sudo apt-get update",
-      "yes N | sudo apt-get upgrade -y",
-      "sudo apt-get install threatstack-agent -y",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get update",
+      "yes N | sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get install threatstack-agent -y",
       # Insert our SSL cert
       "echo '${var.cert_public_key}' | sudo tee /usr/local/openvpn_as/etc/web-ssl/server.crt > /dev/null",
       "echo '${var.cert_private_key}' | sudo tee /usr/local/openvpn_as/etc/web-ssl/server.key > /dev/null",
